@@ -1,0 +1,79 @@
+<aura:component controller="CampingListController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="items" type="Camping_Item__c[]"/>
+    <aura:attribute name="newItem" type="Camping_Item__c" default="{
+        'Name': '',
+        'sObjectType': 'Camping_Item__c',
+        'Quantity__c': 0,
+        'Price__c': 0,
+        'Packed__c': false}" />
+
+    <div class="slds-col slds-col--padded slds-p-top--large"> 
+        <!-- CREATE NEW Camping Item FORM -->
+        <fieldset class="slds-box slds-theme--default slds-container_small">
+
+            <legend id="newCampaingForm" class="slds-text-heading_small slds-var-p-vertical_medium">
+                Add Camping items
+            </legend>
+                <form class="slds-form_stacked">
+                    <!-- For Name Field -->
+                    <lightning:input
+                        aura:id="campingform"
+                        name="campingname"
+                        label="Name"
+                        value="{!v.newItem.Name}"
+                        required="true" />
+                    <!-- For Quantity Field -->
+                    <lightning:input
+                        aura:id="campingform"
+                        name="campingquantity"
+                        type="number"
+                        label="Quantity"
+                        value="{!v.newItem.Quantity__c}"
+                        required="true"
+                        min="1" />
+                    <!-- For Price Field -->    
+                    <lightning:input
+                        aura:id="campingform"
+                        name="campingprice"
+                        label="Price"
+                        type="number"
+                        value="{!v.newItem.Price__c}"
+                        formatter="currency" />
+                    <!-- For Packed? Field -->    
+                    <lightning:input
+                        aura:id="campingform"
+                        name="campingprice"
+                        label="Packed?"
+                        type="checkbox"
+                        checked="{!v.newItem.Packed__c}" />
+                    <!-- For Button Submit -->
+                    <lightning:button label="Create Camping Item"
+                        class="slds-m-top_medium"
+                        variant="brand"
+                        onclick="{!c.clickCreateItem}"/>
+                </form>
+        </fieldset>
+    </div>
+
+    <!-- Iterating Camping items List -->
+
+    <div class="slds-card slds-p-top_medium">
+        <c:campingHeader/>
+        <!-- <lightning:card title="Camping Items">
+            <p class="slds-p-horizontal__small">
+                <aura:iteration var="campingListItem" items="{!v.items}" >
+                    <c:campingListItem item="{!campingListItem}"/>
+                </aura:iteration>
+            </p>
+        </lightning:card>    -->
+
+        <section class="slds-card__body">
+            <div id="list" class="row">
+                <aura:iteration items="{!v.items}" var="items">
+                    <c:campingListItem item="{!items}" />
+                </aura:iteration>
+            </div>
+        </section>
+    </div>
+</aura:component>
